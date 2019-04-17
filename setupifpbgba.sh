@@ -43,18 +43,20 @@ apt-get update
 apt-get upgrade -y
 
 # Instala o virtualbox
-cat /etc/apt/sources.list | grep virtualbox
-if [ $? != 0 ]; then
-	echo "deb https://download.virtualbox.org/virtualbox/debian bionic contrib">>/etc/apt/sources.list
+if [ `dpkg --list | grep virtualbox | awk '{print $2}'` != "virtualbox-6.0" ]; then
+	cat /etc/apt/sources.list | grep virtualbox
+	if [ $? != 0 ]; then
+		echo "deb https://download.virtualbox.org/virtualbox/debian bionic contrib">>/etc/apt/sources.list
+	fi
+
+	wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
+	wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
+
+	apt-get update
+	apt-get install -y gcc make linux-headers-$(uname -r) dkms
+	apt-get install -y virtualbox-6.0
+	usermod -a -G vboxusers aluno
 fi
-
-wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
-wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
-
-apt-get update
-apt-get install -y gcc make linux-headers-$(uname -r) dkms
-apt-get install -y virtualbox-6.0
-usermod -a -G vboxusers aluno
 
 # Remove arquivos não utilizados
 
