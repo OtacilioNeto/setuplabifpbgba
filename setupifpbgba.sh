@@ -54,6 +54,7 @@ wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key a
 apt-get update
 apt-get install -y gcc make linux-headers-$(uname -r) dkms
 apt-get install -y virtualbox-6.0
+usermod -a -G vboxusers aluno
 
 # Remove arquivos não utilizados
 
