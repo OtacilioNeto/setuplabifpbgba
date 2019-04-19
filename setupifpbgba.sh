@@ -1,5 +1,7 @@
 #!/bin/bash
 
+RHAVY="0"
+
 ARQUIVOS_DEB="linux-headers-4.14.36-041436_4.14.36-041436.201804240906_all.deb linux-headers-4.14.36-041436-generic_4.14.36-041436.201804240906_amd64.deb linux-image-unsigned-4.14.36-041436-generic_4.14.36-041436.201804240906_amd64.deb linux-modules-4.14.36-041436-generic_4.14.36-041436.201804240906_amd64.deb"
 
 #O kernel 4.14.36 eh uma versão que não tem o problema no driver da placa de rede e funciona o virtualbox
@@ -56,6 +58,38 @@ if [ `dpkg --list | grep virtualbox | awk '{print $2}'` != "virtualbox-6.0" ]; t
 	apt-get install -y gcc make linux-headers-$(uname -r) dkms
 	apt-get install -y virtualbox-6.0
 	usermod -a -G vboxusers aluno
+fi
+
+# Este é a configuração de Rhavy. Nada aqui foi testado ainda, então está desabilitado por enquanto
+if [ RHAVY != "0" ]; then
+    # Java
+    add-apt-repository ppa:linuxuprising/java
+    apt update
+    apt install -y oracle-java11-installer
+    apt install -y oracle-java11-set-default
+    java -version # Testar Java
+
+    # Pycharm
+    snap install pycharm-community --classic
+
+    # Atom
+    apt install -y software-properties-common apt-transport-https wget
+    wget -q https://packagecloud.io/AtomEditor/atom/gpgkey -O- | sudo apt-key add -
+    add-apt-repository "deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main"
+    apt install -y atom
+
+    # Bracket
+    add-apt-repository ppa:webupd8team/brackets
+    apt-get update
+    apt-get install -y brackets
+
+    # Git
+    apt install -y git
+    git --version # Testar Git
+
+    # MySQL
+    apt install -y mysql-server
+    mysql_secure_installation
 fi
 
 # Remove arquivos não utilizados
