@@ -2,6 +2,7 @@
 
 RHAVY="1"
 BARROS="1"
+ERICK="1"
 
 ARQUIVOS_DEB="linux-headers-4.14.36-041436_4.14.36-041436.201804240906_all.deb linux-headers-4.14.36-041436-generic_4.14.36-041436.201804240906_amd64.deb linux-modules-4.14.36-041436-generic_4.14.36-041436.201804240906_amd64.deb linux-image-unsigned-4.14.36-041436-generic_4.14.36-041436.201804240906_amd64.deb"
 
@@ -50,6 +51,7 @@ apt-get upgrade -y
 apt-get install -y libelf-dev
 apt-get install -y net-tools
 apt-get install -y gitk
+apt-get install -y build-essential
 
 # Instala o vim
 RET=`dpkg --list | grep vim | awk '{print $2}' | head -n 1`
@@ -206,6 +208,24 @@ if [ "$BARROS" != "0" ]; then
 	service postgresql status
 
 fi
+
+if [ "$ERICK" != "0" ]; then
+	RET=`whereis vmware | awk '{print $2}'`
+        if [ "$RET" = "" ]; then
+		echo "====== Instalando o vmware ======"
+		cd /tmp
+		if [ ! -f ./vmware.bin ]; then
+			wget -O ./vmware.bin https://www.vmware.com/go/getWorkstation-linux
+		fi
+		chmod u+x vmware.bin
+		./vmware.bin
+
+		cd
+	else
+		echo "====== Vmware já instalado ======"
+	fi
+fi
+
 
 # Remove arquivos não utilizados
 
