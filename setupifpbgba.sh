@@ -1,5 +1,13 @@
 #!/bin/bash
 
+if [ $# -eq 0 ]; then
+	USUARIO=$USER
+	sudo $0 $USUARIO
+	exit $?
+else
+	USUARIO=$1
+fi
+
 OTA="1"
 RHAVY="1"
 BARROS="1"
@@ -7,7 +15,7 @@ ERICK="1"
 
 ARQUIVOS_DEB="linux-headers-4.14.36-041436_4.14.36-041436.201804240906_all.deb linux-headers-4.14.36-041436-generic_4.14.36-041436.201804240906_amd64.deb linux-modules-4.14.36-041436-generic_4.14.36-041436.201804240906_amd64.deb linux-image-unsigned-4.14.36-041436-generic_4.14.36-041436.201804240906_amd64.deb"
 
-USUARIO="aluno"
+echo "Utilizando usuário $USUARIO nas consfigurações"
 
 #O kernel 4.14.36 eh uma versão que não tem o problema no driver da placa de rede e funciona o virtualbox
 if [ `uname -r` != "4.14.36-041436-generic" ]; then	
