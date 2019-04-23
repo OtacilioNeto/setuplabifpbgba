@@ -1,5 +1,6 @@
 #!/bin/bash
 
+OTA="1"
 RHAVY="1"
 BARROS="1"
 ERICK="1"
@@ -62,24 +63,26 @@ else
 	echo "====== Vim já instalado ======"
 fi
 
-# Instala o virtualbox
-RET=`dpkg --list | grep virtualbox | awk '{print $2}'`
-if [ "$RET" != "virtualbox-6.0" ]; then
-	echo "====== Instalando o VirtualBox ======"
-	cat /etc/apt/sources.list | grep virtualbox
-	if [ $? != 0 ]; then
-		echo "deb https://download.virtualbox.org/virtualbox/debian bionic contrib">>/etc/apt/sources.list
+if [ "$OTA" != "0" ]; then
+	# Instala o virtualbox
+	RET=`dpkg --list | grep virtualbox | awk '{print $2}'`
+	if [ "$RET" != "virtualbox-6.0" ]; then
+		echo "====== Instalando o VirtualBox ======"
+		cat /etc/apt/sources.list | grep virtualbox
+		if [ $? != 0 ]; then
+			echo "deb https://download.virtualbox.org/virtualbox/debian bionic contrib">>/etc/apt/sources.list
+		fi
+
+		wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
+		wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
+
+		apt-get update
+		apt-get install -y gcc make linux-headers-$(uname -r) dkms
+		apt-get install -y virtualbox-6.0
+		usermod -a -G vboxusers aluno
+	else
+		echo "====== VirtualBox já instalado ======"
 	fi
-
-	wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
-	wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
-
-	apt-get update
-	apt-get install -y gcc make linux-headers-$(uname -r) dkms
-	apt-get install -y virtualbox-6.0
-	usermod -a -G vboxusers aluno
-else
-	echo "====== VirtualBox já instalado ======"
 fi
 
 # Este é a configuração de Rhavy.
