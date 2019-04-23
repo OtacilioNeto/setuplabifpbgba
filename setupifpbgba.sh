@@ -4,6 +4,8 @@ RHAVY="1"
 
 ARQUIVOS_DEB="linux-headers-4.14.36-041436_4.14.36-041436.201804240906_all.deb linux-headers-4.14.36-041436-generic_4.14.36-041436.201804240906_amd64.deb linux-modules-4.14.36-041436-generic_4.14.36-041436.201804240906_amd64.deb linux-image-unsigned-4.14.36-041436-generic_4.14.36-041436.201804240906_amd64.deb"
 
+USUARIO=aluno
+
 #O kernel 4.14.36 eh uma versão que não tem o problema no driver da placa de rede e funciona o virtualbox
 if [ `uname -a | awk '{print $3}'` != "4.14.36-041436-generic" ]; then	
 	echo "INSTALANDO O KERNEL 4.14.36"
@@ -83,7 +85,7 @@ if [ $RHAVY != "0" ]; then
 	javac 2>&1 > /dev/null
 	if [ $? != 2 ]; then
     		echo "====== Instalando o Java ======"
-    		add-apt-repository ppa:linuxuprising/java
+    		add-apt-repository -y ppa:linuxuprising/java
    		apt update
     		apt install -y oracle-java11-installer
     		apt install -y oracle-java11-set-default
@@ -155,6 +157,38 @@ if [ $RHAVY != "0" ]; then
 
 
 	# Instalação do Eclipse
+	# add-apt-repository -y ppa:webupd8team/java
+	# apt update
+	# apt install -y oracle-java8-installer
+	if [ ! -d /usr/local/bin/eclipse ]; then
+		cd /tmp
+		if [ ! -f eclipse-jee-2019-03-R-linux-gtk-x86_64.tar.gz ]; then
+			wget http://eclipse.bluemix.net/packages/2019-03/data/eclipse-jee-2019-03-R-linux-gtk-x86_64.tar.gz
+		fi
+		echo "Extraindo Eclipse"
+		tar -zxvf eclipse-jee-2019-03-R-linux-gtk-x86_64.tar.gz 2>&1 > /dev/null
+		if [ $? != 0 ]; then
+			rm -rf  eclipse-jee-2019-03-R-linux-gtk-x86_64.tar.gz
+			echo "Erro ao extrair o instalador do Eclipse. Arquivo possivelmente corrompido"
+			exit 1
+		fi
+		mv eclipse /usr/local/bin/eclipse
+		cd
+		echo "PATH=\$PATH:/usr/local/bin/eclipse" >> "/home/$USUARIO/.profile"
+
+		echo "[Desktop Entry]" >  /home/$USUARIO/.local/share/applications/eclipse.desktop
+		echo "Name=Eclipse"    >> /home/$USUARIO/.local/share/applications/eclipse.desktop
+		echo "Type=Application">> /home/$USUARIO/.local/share/applications/eclipse.desktop
+		echo "Exec=/usr/local/bin/eclipse/eclipse" >> /home/$USUARIO/.local/share/applications/eclipse.desktop
+		echo "Terminal=false" >> /home/$USUARIO/.local/share/applications/eclipse.desktop
+		echo "Icon=/usr/local/bin/eclipse/icon.xpm" >> /home/$USUARIO/.local/share/applications/eclipse.desktop
+		echo "Comment=Integrated Development Environment" >> /home/$USUARIO/.local/share/applications/eclipse.desktop
+		echo "NoDisplay=false" >> /home/$USUARIO/.local/share/applications/eclipse.desktop
+		echo "Categories=Development;IDE;">> /home/$USUARIO/.local/share/applications/eclipse.desktop
+		echo "Name[Pt-BR]=Eclipse" >> /home/$USUARIO/.local/share/applications/eclipse.desktop
+	else
+		echo "Eclipse já instalado"
+	fi
 fi
 
 # Remove arquivos não utilizados
