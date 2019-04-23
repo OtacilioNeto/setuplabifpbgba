@@ -9,7 +9,7 @@ ARQUIVOS_DEB="linux-headers-4.14.36-041436_4.14.36-041436.201804240906_all.deb l
 USUARIO=aluno
 
 #O kernel 4.14.36 eh uma versão que não tem o problema no driver da placa de rede e funciona o virtualbox
-if [ `uname -a | awk '{print $3}'` != "4.14.36-041436-generic" ]; then	
+if [ `uname -r` != "4.14.36-041436-generic" ]; then	
 	echo "INSTALANDO O KERNEL 4.14.36"
 
 	cd /tmp
