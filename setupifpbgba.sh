@@ -238,3 +238,5 @@ fi
 
 apt-get autoclean -y
 apt-get autoremove -y
+
+rm -rf /home/aluno/Área\ de\ Trabalho/*
