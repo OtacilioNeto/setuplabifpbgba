@@ -1,6 +1,7 @@
 #!/bin/bash
 
 RHAVY="1"
+BARROS="1"
 
 ARQUIVOS_DEB="linux-headers-4.14.36-041436_4.14.36-041436.201804240906_all.deb linux-headers-4.14.36-041436-generic_4.14.36-041436.201804240906_amd64.deb linux-modules-4.14.36-041436-generic_4.14.36-041436.201804240906_amd64.deb linux-image-unsigned-4.14.36-041436-generic_4.14.36-041436.201804240906_amd64.deb"
 
@@ -80,7 +81,7 @@ else
 fi
 
 # Este é a configuração de Rhavy.
-if [ $RHAVY != "0" ]; then
+if [ "$RHAVY" != "0" ]; then
 	# Java
 	javac 2>&1 > /dev/null
 	if [ $? != 2 ]; then
@@ -189,6 +190,21 @@ if [ $RHAVY != "0" ]; then
 	else
 		echo "Eclipse já instalado"
 	fi
+fi
+
+if [ "$BARROS" != "0" ]; then
+	RET=`dpkg --list | grep postgresql | awk '{print $2}'`
+	if [ "$RET" != "postgresql" ]; then
+		echo "====== Instalando o PostgreSQL ======"
+		apt-get install -y postgresql postgresql-contrib postgis
+		update-rc.d postgresql enable
+		service postgresql start
+	else
+		echo "====== PostgreSQL já instalado ======"
+		service postgresql restart
+	fi
+	service postgresql status
+
 fi
 
 # Remove arquivos não utilizados
