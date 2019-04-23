@@ -61,72 +61,81 @@ if [ "$RET" != "virtualbox-6.0" ]; then
 	usermod -a -G vboxusers aluno
 fi
 
-# Este é a configuração de Rhavy. Nada aqui foi testado ainda, então está desabilitado por enquanto
+# Este é a configuração de Rhavy.
 if [ $RHAVY != "0" ]; then
-    # Java
-    javac 2>&1 > /dev/null
-    if [ $? != 2 ]; then
-    	echo "====== Instalando o Java ======"
-    	add-apt-repository ppa:linuxuprising/java
-   	apt update
-    	apt install -y oracle-java11-installer
-    	apt install -y oracle-java11-set-default
-    	java -version # Testar Java
-    else
-	echo "====== Java já instalado ======"
-    fi
+	# Java
+	javac 2>&1 > /dev/null
+	if [ $? != 2 ]; then
+    		echo "====== Instalando o Java ======"
+    		add-apt-repository ppa:linuxuprising/java
+   		apt update
+    		apt install -y oracle-java11-installer
+    		apt install -y oracle-java11-set-default
+    		java -version # Testar Java
+    	else
+		echo "====== Java já instalado ======"
+    	fi
 
-    # Pycharm
-    RET=`whereis pycharm-community | awk '{print $2}'`
-    if [ "$RET" = "" ]; then
-    	echo "====== Instalando o Pycharm ======"
-    	snap install pycharm-community --classic
-    else
-	    echo "====== Pycharm já instalado ======"
-    fi
+    	# Pycharm
+    	RET=`whereis pycharm-community | awk '{print $2}'`
+    	if [ "$RET" = "" ]; then
+    		echo "====== Instalando o Pycharm ======"
+    		snap install pycharm-community --classic
+    	else
+    		echo "====== Pycharm já instalado ======"
+    	fi
 
-    # Atom
-    RET=`whereis atom | awk '{print $2}'`
-    if [ "$RET" = "" ]; then
-   	 echo "====== Instalando o Atom ======"
-    	apt install -y software-properties-common apt-transport-https wget
-    	wget -q https://packagecloud.io/AtomEditor/atom/gpgkey -O- | sudo apt-key add -
-    	add-apt-repository "deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main"
-    	apt install -y atom
-    else
-	    echo "====== Atom já instalado ======"
-    fi
+    	# Atom
+    	RET=`whereis atom | awk '{print $2}'`
+    	if [ "$RET" = "" ]; then
+   	 	echo "====== Instalando o Atom ======"
+    		apt install -y software-properties-common apt-transport-https wget
+    		wget -q https://packagecloud.io/AtomEditor/atom/gpgkey -O- | sudo apt-key add -
+    		add-apt-repository "deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main"
+    		apt install -y atom
+    	else
+	    	echo "====== Atom já instalado ======"
+    	fi
 
-    # Bracket
-    RET=`whereis brackets | awk '{print $2}'`
-    if [ "$RET" = "" ]; then
-    	echo "====== Instalando o Bracket ======"
-    	add-apt-repository -y ppa:webupd8team/brackets
-    	apt-get update
-    	apt-get install -y brackets
-    else
-	    echo "====== Bracket já instalado"
-    fi
+    	# Bracket
+    	RET=`whereis brackets | awk '{print $2}'`
+    	if [ "$RET" = "" ]; then
+    		echo "====== Instalando o Bracket ======"
+    		add-apt-repository -y ppa:webupd8team/brackets
+    		apt-get update
+    		apt-get install -y brackets
+    	else
+	    	echo "====== Bracket já instalado"
+    	fi
 
-    # Git
-    git --version
-    if [ $? != 0 ]; then
-    	echo "====== Instalando o Git ======"
-    	apt install -y git
-    	git --version # Testar Git
-    else
-	   echo "====== Git já instalado ======"
-    fi 
+    	# Git
+    	git --version
+    	if [ $? != 0 ]; then
+    		echo "====== Instalando o Git ======"
+    		apt install -y git
+    		git --version # Testar Git
+    	else
+	   	echo "====== Git já instalado ======"
+    	fi 
 
-    # MySQL
-    RET=`whereis mysql | awk '{print $2}'`
-    if [ "$RET" = "" ]; then
-    	echo "====== Instalando o MySQL ======"
-    	apt install -y mysql-server
-    	mysql_secure_installation
-    else
-	    echo "====== MySQL já instalado ======"
-    fi
+    	# MySQL
+    	RET=`whereis mysql | awk '{print $2}'`
+    	if [ "$RET" = "" ]; then
+    		echo "====== Instalando o MySQL ======"
+    		apt install -y mysql-server
+    		mysql_secure_installation
+    	else
+	    	echo "====== MySQL já instalado ======"
+    	fi
+
+	# Pip 3
+	RET=`dpkg --list | grep python3-pip`
+	if [ "$RET" != "python3-pip" ]; then
+		echo "====== Instalando o Pip 3 ======"
+		apt-get install -y python3-pip
+	else
+		echo "====== Pip 3 já instalado ======"
+	fi
 fi
 
 # Remove arquivos não utilizados
