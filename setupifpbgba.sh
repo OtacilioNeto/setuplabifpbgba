@@ -85,6 +85,12 @@ if [ "$OTA" != "0" ]; then
 	fi
 fi
 
+# if [ "$BARROS" != "0" ] || [ "$RHAVY" != "0" ]; then
+	# add-apt-repository -y ppa:webupd8team/java
+        # apt update
+        # apt install -y oracle-java8-installer
+# fi
+
 # Este é a configuração de Rhavy.
 if [ "$RHAVY" != "0" ]; then
 	# Java
@@ -163,9 +169,6 @@ if [ "$RHAVY" != "0" ]; then
 
 
 	# Instalação do Eclipse
-	# add-apt-repository -y ppa:webupd8team/java
-	# apt update
-	# apt install -y oracle-java8-installer
 	if [ ! -d /usr/local/bin/eclipse ]; then
 		cd /tmp
 		if [ ! -f eclipse-jee-2019-03-R-linux-gtk-x86_64.tar.gz ]; then
@@ -210,11 +213,12 @@ if [ "$BARROS" != "0" ]; then
 	fi
 	service postgresql status
 
+
 fi
 
 if [ "$ERICK" != "0" ]; then
 	RET=`whereis vmware | awk '{print $2}'`
-        if [ "$RET" = "" ]; then
+        if [ "$RET" != "/usr/bin/vmware" ]; then
 		echo "====== Instalando o vmware ======"
 		cd /tmp
 		if [ ! -f ./vmware.bin ]; then
