@@ -83,12 +83,6 @@ if [ "$OTA" != "0" ]; then
 	fi
 fi
 
-# if [ "$BARROS" != "0" ] || [ "$RHAVY" != "0" ]; then
-	# add-apt-repository -y ppa:webupd8team/java
-        # apt update
-        # apt install -y oracle-java8-installer
-# fi
-
 # Este é a configuração de Rhavy.
 if [ "$RHAVY" != "0" ]; then
 	# Java
@@ -195,6 +189,7 @@ if [ "$BARROS" != "0" ]; then
 		add-apt-repository -y ppa:openjdk-r/ppa
 		apt-get update
 		apt-get install -y openjdk-8-jdk
+#		java-common oracle-java8-installer oracle-java8-set-default
 		update-alternatives --config java
         else
 		echo "====== OpenJDK já instalado ======"
@@ -206,6 +201,18 @@ if [ "$BARROS" != "0" ]; then
 		apt  install -y netbeans
 	else
 		echo "====== Netbeans já instalado ======"
+	fi
+
+	RET=`dpkg --list | grep astah-professional | awk '{print $2}'`
+        if [ "$RET" != "astah-professional" ]; then
+		echo "====== Instalando o Astah ======"
+		cd /tmp 
+		astah-professional_8.1.0.3ac74f-0_all.deb
+		wget astah-professional_8.1.0.3ac74f-0_all.deb http://cdn.change-vision.com/files/astah-professional_8.1.0.3ac74f-0_all.deb
+		dpkg -i astah-professional_8.1.0.3ac74f-0_all.deb
+		cd
+	else
+		echo "====== Asth já instalado ======"
 	fi
 fi
 
