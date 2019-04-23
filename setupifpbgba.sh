@@ -44,9 +44,20 @@ fi
 apt-get update
 apt-get upgrade -y
 
+
+# Instala o vim
+RET=`dpkg --list | grep vim | awk '{print $2}' | head -n 1`
+if [ "$RET" != "vim" ]; then
+	echo "====== Instalando o Vim ======"
+	apt-get install -y vim
+else
+	echo "====== Vim já instalado ======"
+fi
+
 # Instala o virtualbox
 RET=`dpkg --list | grep virtualbox | awk '{print $2}'`
 if [ "$RET" != "virtualbox-6.0" ]; then
+	echo "====== Instalando o VirtualBox ======"
 	cat /etc/apt/sources.list | grep virtualbox
 	if [ $? != 0 ]; then
 		echo "deb https://download.virtualbox.org/virtualbox/debian bionic contrib">>/etc/apt/sources.list
@@ -59,6 +70,8 @@ if [ "$RET" != "virtualbox-6.0" ]; then
 	apt-get install -y gcc make linux-headers-$(uname -r) dkms
 	apt-get install -y virtualbox-6.0
 	usermod -a -G vboxusers aluno
+else
+	echo "====== VirtualBox já instalado ======"
 fi
 
 # Este é a configuração de Rhavy.
@@ -129,7 +142,7 @@ if [ $RHAVY != "0" ]; then
     	fi
 
 	# Pip 3
-	RET=`dpkg --list | grep python3-pip`
+	RET=`dpkg --list | grep python3-pip | awk '{print $2}'`
 	if [ "$RET" != "python3-pip" ]; then
 		echo "====== Instalando o Pip 3 ======"
 		apt-get install -y python3-pip
