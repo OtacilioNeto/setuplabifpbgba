@@ -7,7 +7,7 @@ ERICK="1"
 
 ARQUIVOS_DEB="linux-headers-4.14.36-041436_4.14.36-041436.201804240906_all.deb linux-headers-4.14.36-041436-generic_4.14.36-041436.201804240906_amd64.deb linux-modules-4.14.36-041436-generic_4.14.36-041436.201804240906_amd64.deb linux-image-unsigned-4.14.36-041436-generic_4.14.36-041436.201804240906_amd64.deb"
 
-USUARIO=aluno
+USUARIO="aluno"
 
 #O kernel 4.14.36 eh uma versão que não tem o problema no driver da placa de rede e funciona o virtualbox
 if [ `uname -r` != "4.14.36-041436-generic" ]; then	
@@ -213,7 +213,24 @@ if [ "$BARROS" != "0" ]; then
 	fi
 	service postgresql status
 
+	RET=`java -version 2>&1 | awk '{print $1}' | head -n 1`
+        if [ "$RET" != "openjdk" ]; then
+                echo "====== Instalando o OpenJDK ======"
+		add-apt-repository -y ppa:openjdk-r/ppa
+		apt-get update
+		apt-get install -y openjdk-8-jdk
+		update-alternatives --config java
+        else
+		echo "====== OpenJDK já instalado ======"
+        fi
 
+	RET=`dpkg --list | grep netbeans | awk '{print $2}'`
+        if [ "$RET" != "netbeans" ]; then
+		echo "====== Instalando o NetBeans ======"
+		apt  install -y netbeans
+	else
+		echo "====== Netbeans já instalado ======"
+	fi
 fi
 
 if [ "$ERICK" != "0" ]; then
