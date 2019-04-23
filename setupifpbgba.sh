@@ -79,7 +79,7 @@ if [ "$OTA" != "0" ]; then
 		apt-get update
 		apt-get install -y gcc make linux-headers-$(uname -r) dkms
 		apt-get install -y virtualbox-6.0
-		usermod -a -G vboxusers aluno
+		usermod -a -G vboxusers $USUARIO
 	else
 		echo "====== VirtualBox já instalado ======"
 	fi
@@ -283,4 +283,7 @@ fi
 apt-get autoclean -y
 apt-get autoremove -y
 
-rm -rf /home/aluno/Área\ de\ Trabalho/*
+rm -rf /home/$USUARIO/Área\ de\ Trabalho/*
+
+snap install gnome-3-26-1604
+snap connect gnome-system-monitor:gnome-3-26-1604 gnome-3-26-1604
