@@ -44,6 +44,9 @@ fi
 apt-get update
 apt-get upgrade -y
 
+apt-get install -y libelf-dev
+apt-get install -y net-tools
+apt-get install -y gitk
 
 # Instala o vim
 RET=`dpkg --list | grep vim | awk '{print $2}' | head -n 1`
@@ -149,6 +152,9 @@ if [ $RHAVY != "0" ]; then
 	else
 		echo "====== Pip 3 já instalado ======"
 	fi
+
+
+	# Instalação do Eclipse
 fi
 
 # Remove arquivos não utilizados
