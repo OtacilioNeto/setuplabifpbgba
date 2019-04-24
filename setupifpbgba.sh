@@ -1,5 +1,18 @@
 #!/bin/bash
 
+OTA="1"
+RHAVY="1"
+BARROS="1"
+ERICK="1"
+
+# Limpa a área de trabalho
+rm -rf /home/$USUARIO/Área\ de\ Trabalho/*
+
+# configura o background para o padrão
+if [ -f /usr/share/backgrounds/warty-final-ubuntu.png ]; then
+        gsettings set org.gnome.desktop.background picture-uri 'file:///usr/share/backgrounds/warty-final-ubuntu.png'
+fi
+
 if [ $# -eq 0 ]; then
 	USUARIO=$USER
 	sudo $0 $USUARIO
@@ -7,11 +20,6 @@ if [ $# -eq 0 ]; then
 else
 	USUARIO=$1
 fi
-
-OTA="1"
-RHAVY="1"
-BARROS="1"
-ERICK="1"
 
 ARQUIVOS_DEB="linux-headers-4.14.36-041436_4.14.36-041436.201804240906_all.deb linux-headers-4.14.36-041436-generic_4.14.36-041436.201804240906_amd64.deb linux-modules-4.14.36-041436-generic_4.14.36-041436.201804240906_amd64.deb linux-image-unsigned-4.14.36-041436-generic_4.14.36-041436.201804240906_amd64.deb"
 
@@ -290,8 +298,6 @@ fi
 
 apt-get autoclean -y
 apt-get autoremove -y
-
-rm -rf /home/$USUARIO/Área\ de\ Trabalho/*
 
 snap install gnome-3-26-1604
 snap connect gnome-system-monitor:gnome-3-26-1604 gnome-3-26-1604
