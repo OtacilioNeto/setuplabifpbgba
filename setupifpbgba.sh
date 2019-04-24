@@ -13,6 +13,10 @@ if [ -f /usr/share/backgrounds/warty-final-ubuntu.png ]; then
         gsettings set org.gnome.desktop.background picture-uri 'file:///usr/share/backgrounds/warty-final-ubuntu.png'
 fi
 
+# Configura 30 minutos de tempo para escurecer a tela e desabilita a solicitação de senha quando volta
+gsettings set org.gnome.desktop.session idle-delay 1800
+gsettings set org.gnome.desktop.screensaver lock-enabled false
+
 if [ $# -eq 0 ]; then
 	USUARIO=$USER
 	sudo $0 $USUARIO
