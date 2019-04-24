@@ -22,7 +22,7 @@ if [ `cat $HOME/.profile | grep setupifpbgba | wc -l` -eq 0 ]; then
 
 	chmod ugo+x $HOME/.setupifpbgba
 
-	echo "if [ -f ""$HOME/.setpifpbgba"" ]; then" >> $HOME/.profile
+	echo "if [ -f ""$HOME/.setupifpbgba"" ]; then" >> $HOME/.profile
         echo ". ""$HOME/.setupifpbgba"" " >> $HOME/.profile
 	echo "fi" >> $HOME/.profile
 	
