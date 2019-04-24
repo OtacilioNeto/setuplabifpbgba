@@ -6,7 +6,7 @@ BARROS="1"
 ERICK="1"
 
 # Limpa a área de trabalho
-rm -rf /home/$USUARIO/Área\ de\ Trabalho/*
+rm -rf $HOME/Área\ de\ Trabalho/*
 
 # configura o background para o padrão
 if [ -f /usr/share/backgrounds/warty-final-ubuntu.png ]; then
@@ -16,6 +16,30 @@ fi
 # Configura 30 minutos de tempo para escurecer a tela e desabilita a solicitação de senha quando volta
 gsettings set org.gnome.desktop.session idle-delay 1800
 gsettings set org.gnome.desktop.screensaver lock-enabled false
+
+# Se nao tem o script de configuração
+if [ `cat $HOME/.profile | grep setupifpbgba | wc -l` -eq 0 ]; then
+	echo "Criando scripts de configuração do ambiente"
+	echo "#!/bin/sh" > $HOME/.setupifpbgba
+	echo "# Limpa a área de trabalho" >> $HOME/.setupifpbgba
+	echo "rm -rf $HOME/Área\ de\ Trabalho/*" >> $HOME/.setupifpbgba
+
+	echo "# configura o background para o padrão" >> $HOME/.setupifpbgba
+	echo "if [ -f /usr/share/backgrounds/warty-final-ubuntu.png ]; then" >> $HOME/.setupifpbgba
+        echo "	gsettings set org.gnome.desktop.background picture-uri 'file:///usr/share/backgrounds/warty-final-ubuntu.png'" >> $HOME/.setupifpbgba
+	echo "fi" >> $HOME/.setupifpbgba
+	echo "# Configura 30 minutos de tempo para escurecer a tela e desabilita a solicitação de senha quando volta" >> $HOME/.setupifpbgba
+	echo "gsettings set org.gnome.desktop.session idle-delay 1800" >> $HOME/.setupifpbgba
+	echo "gsettings set org.gnome.desktop.screensaver lock-enabled false" >> $HOME/.setupifpbgba
+
+	chmod ugo+x $HOME/.setupifpbgba
+
+	echo "if [ -f ""$HOME/.setpifpbgba"" ]; then" >> $HOME/.profile
+        echo ". ""$HOME/.setupifpbgba"" " >> $HOME/.profile
+	echo "fi" >> $HOME/.profile
+	
+	exit 0
+fi
 
 if [ $# -eq 0 ]; then
 	USUARIO=$USER
