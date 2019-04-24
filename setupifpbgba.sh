@@ -5,15 +5,6 @@ RHAVY="1"
 BARROS="1"
 ERICK="1"
 
-# configura o background para o padrão
-if [ -f /usr/share/backgrounds/warty-final-ubuntu.png ]; then
-        gsettings set org.gnome.desktop.background picture-uri 'file:///usr/share/backgrounds/warty-final-ubuntu.png'
-fi
-
-# Configura 30 minutos de tempo para escurecer a tela e desabilita a solicitação de senha quando volta
-gsettings set org.gnome.desktop.session idle-delay 1800
-gsettings set org.gnome.desktop.screensaver lock-enabled false
-
 # Se nao tem o script de configuração
 if [ `cat $HOME/.profile | grep setupifpbgba | wc -l` -eq 0 ]; then
 	echo "Criando scripts de configuração do ambiente"
