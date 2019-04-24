@@ -5,9 +5,6 @@ RHAVY="1"
 BARROS="1"
 ERICK="1"
 
-# Limpa a área de trabalho
-rm -rf $HOME/Área\ de\ Trabalho/*
-
 # configura o background para o padrão
 if [ -f /usr/share/backgrounds/warty-final-ubuntu.png ]; then
         gsettings set org.gnome.desktop.background picture-uri 'file:///usr/share/backgrounds/warty-final-ubuntu.png'
