@@ -31,7 +31,7 @@ fi
 
 if [ $# -eq 0 ]; then
 	USUARIO=$USER
-	sudo $0 $USUARIO
+	sudo /bin/bash $0 $USUARIO
 	exit $?
 else
 	USUARIO=$1
@@ -45,7 +45,11 @@ echo "Utilizando usuário $USUARIO nas consfigurações"
 if [ `uname -r` != "4.14.36-041436-generic" ]; then	
 	echo "INSTALANDO O KERNEL 4.14.36"
 
-	cd /tmp
+	if [ -d /media/aluno/OTACILIO ]; then
+		cd /media/aluno/OTACILIO
+	else
+		cd /tmp
+	fi
 	
 	for I in $ARQUIVOS_DEB
 	do	
