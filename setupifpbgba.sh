@@ -89,6 +89,8 @@ apt-get install -y libelf-dev
 apt-get install -y net-tools
 apt-get install -y gitk
 apt-get install -y build-essential
+# Para usar o comando que supostamente melhora a estabilidade da placa de rede  ethtool -K eno1 highdma off
+apt install -y ethtool
 
 # Instala o vim
 RET=`dpkg --list | grep vim | awk '{print $2}' | head -n 1`
