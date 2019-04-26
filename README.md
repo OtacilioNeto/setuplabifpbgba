@@ -49,3 +49,4 @@ Na instalação do VMWare
 	Next
 	Next
 	Install
+	Close
