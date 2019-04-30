@@ -6,7 +6,7 @@ BARROS="1"
 ERICK="1"
 
 # Se nao tem o script de configuração
-if [ $USER != "root" ]; && [ `cat $HOME/.profile | grep setupifpbgba | wc -l` -eq 0 ]; then
+if [ $USER != "root" ] && [ `cat $HOME/.profile | grep setupifpbgba | wc -l` -eq 0 ]; then
 	echo "Criando scripts de configuração do ambiente"
 	echo "#!/bin/sh" > $HOME/.setupifpbgba
 	echo "# Limpa a área de trabalho" >> $HOME/.setupifpbgba
