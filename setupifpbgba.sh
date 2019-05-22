@@ -45,8 +45,8 @@ echo "Utilizando usuário $USUARIO nas consfigurações"
 if [ `uname -r` != "4.14.36-041436-generic" ]; then	
 	echo "INSTALANDO O KERNEL 4.14.36"
 
-	if [ -d /media/aluno/OTACILIO ]; then
-		cd /media/aluno/OTACILIO
+	if [ -d "/media/$USUARIO/OTACILIO" ]; then
+		cd "/media/$USUARIO/OTACILIO"
 	else
 		cd /tmp
 	fi
