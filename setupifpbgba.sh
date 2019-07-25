@@ -5,6 +5,13 @@ RHAVY="1"
 BARROS="1"
 ERICK="1"
 
+sudo /sbin/ethtool -K eno1 highdma off
+sudo /sbin/rmmod tg3
+sudo /sbin/insmod /lib/modules/`uname -r`/kernel/drivers/net/ethernet/broadcom/tg3.ko
+
+sleep 3
+
+
 # Se nao tem o script de configuração
 echo "Criando scripts de configuração do ambiente"
 echo "#!/bin/sh" > $HOME/.setupifpbgba
