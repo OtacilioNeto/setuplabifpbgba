@@ -7,9 +7,9 @@ ERICK="1"
 
 if [ $USER == "root" ]; then
 	apt --fix-broken install
-	echo -n "Reiniciando o driver tg3..."
 	apt install -y ethtool
-	apt install net-tools
+        apt install net-tools
+	echo -n "Reiniciando o driver tg3..."
 	/sbin/ethtool -K eno1 highdma off
 	/sbin/rmmod tg3
 	/sbin/insmod /lib/modules/`uname -r`/kernel/drivers/net/ethernet/broadcom/tg3.ko
@@ -53,9 +53,18 @@ if [ ! -d $HOME/bin ]; then
 fi
 
 echo "#!/bin/sh" > $HOME/bin/reset_tg3.sh
+echo "echo -n \"Reiniciando o driver tg3...\"" >> $HOME/bin/reset_tg3.sh
 echo "/sbin/ethtool -K eno1 highdma off" >> $HOME/bin/reset_tg3.sh
 echo "/sbin/rmmod tg3" >> $HOME/bin/reset_tg3.sh
 echo "/sbin/insmod /lib/modules/`uname -r`/kernel/drivers/net/ethernet/broadcom/tg3.ko" >> $HOME/bin/reset_tg3.sh
+echo "sleep 3" >> $HOME/bin/reset_tg3.sh
+echo "    ifconfig eno1 | grep \"inet \"" >> $HOME/bin/reset_tg3.sh
+echo "        while [ \"$?\" != \"0\" ]" >> $HOME/bin/reset_tg3.sh
+echo "       do" >> $HOME/bin/reset_tg3.sh
+echo "               sleep 1" >> $HOME/bin/reset_tg3.sh
+echo "                ifconfig eno1 | grep \"inet \"" >> $HOME/bin/reset_tg3.sh
+echo "       done" >>  $HOME/bin/reset_tg3.sh
+echo "        echo \"Feito!\"" >> $HOME/bin/reset_tg3.sh
 
 chmod u+x $HOME/bin/reset_tg3.sh
 
