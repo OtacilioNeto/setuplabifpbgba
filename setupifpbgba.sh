@@ -45,8 +45,8 @@ echo "Utilizando usuário $USUARIO nas consfigurações"
 if [ `uname -r` != "4.14.36-041436-generic" ]; then	
 	echo "INSTALANDO O KERNEL 4.14.36"
 
-	if [ -d /media/aluno/OTACILIO ]; then
-		cd /media/aluno/OTACILIO
+	if [ -d "/media/$USER/OTACILIO" ]; then
+		cd "/media/$USER/OTACILIO"
 	else
 		cd /tmp
 	fi
@@ -89,6 +89,7 @@ apt-get install -y libelf-dev
 apt-get install -y net-tools
 apt-get install -y gitk
 apt-get install -y build-essential
+apt-get install -y whois
 # Para usar o comando que supostamente melhora a estabilidade da placa de rede  ethtool -K eno1 highdma off
 apt install -y ethtool
 
