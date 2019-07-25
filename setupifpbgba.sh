@@ -29,6 +29,17 @@ if [ $USER != "root" ] && [ `cat $HOME/.profile | grep setupifpbgba | wc -l` -eq
 	exit 0
 fi
 
+if [ ! -d $HOME/bin ]; then
+	mkdir $HOME/bin
+fi
+
+echo "#!/bin/sh" > $HOME/bin/reset_tg3.sh
+echo "/sbin/ethtool -K eno1 highdma off" >> $HOME/bin/reset_tg3.sh
+echo "/sbin/rmmod tg3" >> $HOME/bin/reset_tg3.sh
+echo "/sbin/insmod /lib/modules/`uname -r`/kernel/drivers/net/ethernet/broadcom/tg3.ko" >> $HOME/bin/reset_tg3.sh
+
+chmod u+x $HOME/bin/reset_tg3.sh
+
 if [ $# -eq 0 ]; then
 	USUARIO=$USER
 	sudo /bin/bash $0 $USUARIO
