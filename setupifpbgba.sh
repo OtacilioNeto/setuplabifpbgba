@@ -7,6 +7,8 @@ ERICK="1"
 
 if [ $USER == "root" ]; then
 	echo -n "Reiniciando o driver tg3..."
+	apt install -y ethtool
+	apt install net-tools
 	/sbin/ethtool -K eno1 highdma off
 	/sbin/rmmod tg3
 	/sbin/insmod /lib/modules/`uname -r`/kernel/drivers/net/ethernet/broadcom/tg3.ko
