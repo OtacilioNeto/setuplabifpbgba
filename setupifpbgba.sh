@@ -56,7 +56,7 @@ echo "#!/bin/sh" > $HOME/bin/reset_tg3.sh
 echo "echo -n \"Reiniciando o driver tg3...\"" >> $HOME/bin/reset_tg3.sh
 echo "/sbin/ethtool -K eno1 highdma off" >> $HOME/bin/reset_tg3.sh
 echo "/sbin/rmmod tg3" >> $HOME/bin/reset_tg3.sh
-echo "/sbin/insmod /lib/modules/`uname -r`/kernel/drivers/net/ethernet/broadcom/tg3.ko" >> $HOME/bin/reset_tg3.sh
+echo "/sbin/insmod /lib/modules/\`uname -r\`/kernel/drivers/net/ethernet/broadcom/tg3.ko" >> $HOME/bin/reset_tg3.sh
 echo "sleep 3" >> $HOME/bin/reset_tg3.sh
 echo "    ifconfig eno1 | grep \"inet \"" >> $HOME/bin/reset_tg3.sh
 echo "        while [ \"\$?\" != \"0\" ]" >> $HOME/bin/reset_tg3.sh
