@@ -6,6 +6,7 @@ BARROS="1"
 ERICK="1"
 
 if [ $USER == "root" ]; then
+	apt --fix-broken install
 	echo -n "Reiniciando o driver tg3..."
 	apt install -y ethtool
 	apt install net-tools
