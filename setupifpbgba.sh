@@ -11,6 +11,12 @@ if [ $USER == "root" ]; then
 	/sbin/rmmod tg3
 	/sbin/insmod /lib/modules/`uname -r`/kernel/drivers/net/ethernet/broadcom/tg3.ko
 	sleep 3
+	ifconfig eno1 | grep "inet " 
+	while [ "$?" != "0" ]
+	do
+		sleep 1
+		ifconfig eno1 | grep "inet " 
+	done
 	echo "Feito!"
 fi
 
