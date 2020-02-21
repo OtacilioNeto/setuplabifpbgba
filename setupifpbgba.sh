@@ -1,9 +1,9 @@
 #!/bin/bash
 
 OTA="1"
-RHAVY="0"
-BARROS="0"
-ERICK="0"
+RHAVY="1"
+BARROS="1"
+ERICK="1"
 
 if [ $USER == "root" ]; then
 	apt --fix-broken install
