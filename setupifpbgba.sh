@@ -344,11 +344,10 @@ if [ "$ERICK" != "0" ]; then
 		echo "====== Instalando o vmware ======"
 		cd /tmp
 		if [ ! -f ./vmware.bin ]; then
-			wget -O ./vmware.bin https://www.vmware.com/go/getWorkstation-linux
+			wget -O ./vmware.bin https://download3.vmware.com/software/player/file/VMware-Player-15.5.1-15018445.x86_64.bundle?HashKey=7c94176a06d89d5a3c7043fedf9c341e&params=%7B%22sourcefilesize%22%3A%22157.73+MB%22%2C%22dlgcode%22%3A%22PLAYER-1551%22%2C%22languagecode%22%3A%22en%22%2C%22source%22%3A%22DOWNLOADS%22%2C%22downloadtype%22%3A%22manual%22%2C%22eula%22%3A%22N%22%2C%22downloaduuid%22%3A%228181c761-efe1-4e17-a331-d6e3b192cfb8%22%2C%22purchased%22%3A%22N%22%2C%22dlgtype%22%3A%22Product+Binaries%22%2C%22productversion%22%3A%2215.5.1%22%2C%22productfamily%22%3A%22VMware+Workstation+Player%22%7D&AuthKey=1582306879_45f9191e5cbfacb14b403478fd433120
 		fi
 		chmod u+x vmware.bin
 		./vmware.bin
-
 		cd
 	else
 		echo "====== Vmware já instalado ======"
