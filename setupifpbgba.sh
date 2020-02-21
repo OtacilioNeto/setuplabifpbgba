@@ -5,24 +5,29 @@ RHAVY="1"
 BARROS="1"
 ERICK="1"
 
-# if [ $USER == "root" ]; then
-#	apt --fix-broken install
-#	apt install -y ethtool
-#        apt install net-tools
-#	echo -n "Reiniciando o driver tg3..."
-#	/sbin/ethtool -K eno1 highdma off
-#	/sbin/rmmod tg3
-#	/sbin/insmod /lib/modules/`uname -r`/kernel/drivers/net/ethernet/broadcom/tg3.ko
-#	sleep 3
-#	ifconfig eno1 | grep "inet " 
-#	while [ "$?" != "0" ]
-#	do
-#		sleep 1
-#		ifconfig eno1 | grep "inet " 
-#	done
-#	echo "Feito!"
-#fi
+# Esta opção deve ser habilitada quando executando o script nas máquinas que tem a placa 
+# de rede problemática. As que usam driver TG3
+TG3="0"
 
+if [ $USER == "root" ]; then
+	apt --fix-broken install
+	apt install -y ethtool
+        apt install net-tools
+	if [ $TG3 == "1" ]; then
+		echo -n "Reiniciando o driver tg3..."
+		/sbin/ethtool -K eno1 highdma off
+		/sbin/rmmod tg3
+		/sbin/insmod /lib/modules/`uname -r`/kernel/drivers/net/ethernet/broadcom/tg3.ko
+		sleep 3
+		ifconfig eno1 | grep "inet " 
+	while [ "$?" != "0" ]
+	do
+		sleep 1
+		ifconfig eno1 | grep "inet " 
+	done
+	fi
+	echo "Feito!"
+fi
 
 # Se nao tem o script de configuração
 echo "Criando scripts de configuração do ambiente"
@@ -52,21 +57,22 @@ if [ ! -d $HOME/bin ]; then
 	mkdir $HOME/bin
 fi
 
-#echo "#!/bin/sh" > $HOME/bin/reset_tg3.sh
-#echo "echo -n \"Reiniciando o driver tg3...\"" >> $HOME/bin/reset_tg3.sh
-#echo "/sbin/ethtool -K eno1 highdma off" >> $HOME/bin/reset_tg3.sh
-#echo "/sbin/rmmod tg3" >> $HOME/bin/reset_tg3.sh
-#echo "/sbin/insmod /lib/modules/\`uname -r\`/kernel/drivers/net/ethernet/broadcom/tg3.ko" >> $HOME/bin/reset_tg3.sh
-#echo "sleep 3" >> $HOME/bin/reset_tg3.sh
-#echo "    ifconfig eno1 | grep \"inet \"" >> $HOME/bin/reset_tg3.sh
-#echo "        while [ \"\$?\" != \"0\" ]" >> $HOME/bin/reset_tg3.sh
-#echo "       do" >> $HOME/bin/reset_tg3.sh
-#echo "               sleep 1" >> $HOME/bin/reset_tg3.sh
-#echo "                ifconfig eno1 | grep \"inet \"" >> $HOME/bin/reset_tg3.sh
-#echo "       done" >>  $HOME/bin/reset_tg3.sh
-#echo "        echo \"Feito!\"" >> $HOME/bin/reset_tg3.sh
-
-#chmod u+x $HOME/bin/reset_tg3.sh
+if [ $TG3 == "1" ]; then
+	echo "#!/bin/sh" > $HOME/bin/reset_tg3.sh
+	echo "echo -n \"Reiniciando o driver tg3...\"" >> $HOME/bin/reset_tg3.sh
+	echo "/sbin/ethtool -K eno1 highdma off" >> $HOME/bin/reset_tg3.sh
+	echo "/sbin/rmmod tg3" >> $HOME/bin/reset_tg3.sh
+	echo "/sbin/insmod /lib/modules/\`uname -r\`/kernel/drivers/net/ethernet/broadcom/tg3.ko" >> $HOME/bin/reset_tg3.sh
+	echo "sleep 3" >> $HOME/bin/reset_tg3.sh
+	echo "    ifconfig eno1 | grep \"inet \"" >> $HOME/bin/reset_tg3.sh
+	echo "        while [ \"\$?\" != \"0\" ]" >> $HOME/bin/reset_tg3.sh
+	echo "       do" >> $HOME/bin/reset_tg3.sh
+	echo "               sleep 1" >> $HOME/bin/reset_tg3.sh
+	echo "                ifconfig eno1 | grep \"inet \"" >> $HOME/bin/reset_tg3.sh
+	echo "       done" >>  $HOME/bin/reset_tg3.sh
+	echo "        echo \"Feito!\"" >> $HOME/bin/reset_tg3.sh
+	chmod u+x $HOME/bin/reset_tg3.sh
+fi
 
 if [ $# -eq 0 ]; then
 	USUARIO=$USER
@@ -76,50 +82,52 @@ else
 	USUARIO=$1
 fi
 
-#ARQUIVOS_DEB="linux-headers-4.14.36-041436_4.14.36-041436.201804240906_all.deb linux-headers-4.14.36-041436-generic_4.14.36-041436.201804240906_amd64.deb linux-modules-4.14.36-041436-generic_4.14.36-041436.201804240906_amd64.deb linux-image-unsigned-4.14.36-041436-generic_4.14.36-041436.201804240906_amd64.deb"
-
 echo "Utilizando usuário $USUARIO nas consfigurações"
 
-#O kernel 4.14.36 eh uma versão que não tem o problema no driver da placa de rede e funciona o virtualbox
-#if [ `uname -r` != "4.14.36-041436-generic" ]; then	
-#	echo "INSTALANDO O KERNEL 4.14.36"
+if [ $TG3 == "1" ]; then
 
-#	if [ -d "/media/$USER/OTACILIO" ]; then
-#		cd "/media/$USER/OTACILIO"
-#	else
-#		cd /tmp
-#	fi
-#	
-#	for I in $ARQUIVOS_DEB
-#	do	
-#		# Baixao arquivo .deb
-#		if [ ! -f $I ]; then
-#			wget https://kernel.ubuntu.com/~kernel-ppa/mainline/v4.14.36/$I
-#			if [ $? != 0 ]; then
-#				echo "Erro ao tentar baixar o arquivo $I"
-#				exit 1
-#			fi
-#		fi
-#		
-#		# Instala o arquivo .deb
-#		dpkg -i $I
-#		if [ $? != 0 ]; then
-#			echo "Erro ao instalar $I. Provavelmente o arquivo está corrompido."
-#			rm -f $I
-#			exit 1
-#		fi
-#	done
-#
-#	# Atualize o grub para dar o boot pelo novo kernel
-#	sed -i 's/GRUB_DEFAULT=0/GRUB_DEFAULT="Opções avançadas para Ubuntu>Ubuntu, com o Linux 4.14.36-041436-generic"/g' /etc/default/grub
-#
-#	update-grub
-#
-#	# Vamos reiniciar para carregar o kernel novo
-#	shutdown -r now
-#else
-#	echo "Kernel 4.14.36-041436-generic detectado. Continuando a instalação"
-#fi
+	ARQUIVOS_DEB="linux-headers-4.14.36-041436_4.14.36-041436.201804240906_all.deb linux-headers-4.14.36-041436-generic_4.14.36-041436.201804240906_amd64.deb linux-modules-4.14.36-041436-generic_4.14.36-041436.201804240906_amd64.deb linux-image-unsigned-4.14.36-041436-generic_4.14.36-041436.201804240906_amd64.deb"
+	#O kernel 4.14.36 eh uma versão que não tem o problema no driver da placa de rede e funciona o virtualbox
+	if [ `uname -r` != "4.14.36-041436-generic" ]; then	
+		echo "INSTALANDO O KERNEL 4.14.36"
+
+		if [ -d "/media/$USER/OTACILIO" ]; then
+			cd "/media/$USER/OTACILIO"
+		else
+			cd /tmp
+		fi
+	
+		for I in $ARQUIVOS_DEB
+		do	
+			# Baixao arquivo .deb
+			if [ ! -f $I ]; then
+				wget https://kernel.ubuntu.com/~kernel-ppa/mainline/v4.14.36/$I
+				if [ $? != 0 ]; then
+					echo "Erro ao tentar baixar o arquivo $I"
+					exit 1
+				fi
+			fi
+		
+			# Instala o arquivo .deb
+			dpkg -i $I
+			if [ $? != 0 ]; then
+				echo "Erro ao instalar $I. Provavelmente o arquivo está corrompido."
+				rm -f $I
+				exit 1
+			fi
+		done
+
+		# Atualize o grub para dar o boot pelo novo kernel
+		sed -i 's/GRUB_DEFAULT=0/GRUB_DEFAULT="Opções avançadas para Ubuntu>Ubuntu, com o Linux 4.14.36-041436-generic"/g' /etc/default/grub
+
+		update-grub
+
+		# Vamos reiniciar para carregar o kernel novo
+		shutdown -r now
+	else
+		echo "Kernel 4.14.36-041436-generic detectado. Continuando a instalação"
+	fi
+fi
 
 apt-get update
 apt-get upgrade -y
