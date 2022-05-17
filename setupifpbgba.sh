@@ -1,9 +1,9 @@
 #!/bin/bash
 
 OTA="1"
-RHAVY="1"
-BARROS="1"
-ERICK="1"
+RHAVY="0"
+BARROS="0"
+ERICK="0"
 
 # Esta opção deve ser habilitada quando executando o script nas máquinas que tem a placa 
 # de rede problemática. As que usam driver TG3
@@ -85,7 +85,6 @@ fi
 echo "Utilizando usuário $USUARIO nas consfigurações"
 
 if [ $TG3 == "1" ]; then
-
 	ARQUIVOS_DEB="linux-headers-4.14.36-041436_4.14.36-041436.201804240906_all.deb linux-headers-4.14.36-041436-generic_4.14.36-041436.201804240906_amd64.deb linux-modules-4.14.36-041436-generic_4.14.36-041436.201804240906_amd64.deb linux-image-unsigned-4.14.36-041436-generic_4.14.36-041436.201804240906_amd64.deb"
 	#O kernel 4.14.36 eh uma versão que não tem o problema no driver da placa de rede e funciona o virtualbox
 	if [ `uname -r` != "4.14.36-041436-generic" ]; then	
@@ -123,7 +122,8 @@ if [ $TG3 == "1" ]; then
 		update-grub
 
 		# Vamos reiniciar para carregar o kernel novo
-		shutdown -r now
+		echo "Reinicialize a máquina para continuar a atualização"
+		exit 0
 	else
 		echo "Kernel 4.14.36-041436-generic detectado. Continuando a instalação"
 	fi
@@ -151,8 +151,8 @@ fi
 
 if [ "$OTA" != "0" ]; then
 	# Instala o virtualbox
-	RET=`dpkg --list | grep virtualbox | awk '{print $2}'`
-	if [ "$RET" != "virtualbox-6.0" ]; then
+	RET=`dpkg --list | grep virtualbox | grep ii | awk '{print $2}'`
+	if [ "$RET" != "virtualbox-6.1" ]; then
 		echo "====== Instalando o VirtualBox ======"
 		cat /etc/apt/sources.list | grep virtualbox
 		if [ $? != 0 ]; then
@@ -164,7 +164,7 @@ if [ "$OTA" != "0" ]; then
 
 		apt-get update
 		apt-get install -y gcc make linux-headers-$(uname -r) dkms
-		apt-get install -y virtualbox-6.0
+		apt-get install -y virtualbox-6.1
 		usermod -a -G vboxusers $USUARIO
 	else
 		echo "====== VirtualBox já instalado ======"
@@ -368,5 +368,7 @@ fi
 apt-get autoclean -y
 apt-get autoremove -y
 
-snap install gnome-3-26-1604
-snap connect gnome-system-monitor:gnome-3-26-1604 gnome-3-26-1604
+snap install gnome-3-38-2004
+snap install gnome-system-monitor
+GNOME=`snap connections gnome-system-monitor | grep gnome-3- | python3 -c "print(input().split()[0].replace('content[','').replace(']',''))"`
+snap connect gnome-system-monitor:$GNOME $GNOME
